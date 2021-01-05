@@ -44,7 +44,7 @@ Route::get('/delete-post', function () {
     $post->delete();
     echo "Deleted";
 });
-Route::get('/cout-post', function () {
+Route::get('/count-post', function () {
     $totalPost = \App\Post::where('category_id', 1)->count();
     echo $totalPost . "  is total post";
 });
@@ -69,3 +69,7 @@ Route::get('/posts-by-whereOr', function () {
         echo $post->title . '<br>';
     }
 });
+Route::get('/giai-ptb2', 'Ptb2@getFormGiaiPTB2');
+Route::get('/giai-ptb2-submit', 'Ptb2@getFormGiaiPTB2Submit');
+Route::get('/login', 'AuthController@Login');
+Route::post('/login', 'AuthController@getFormSubmit');

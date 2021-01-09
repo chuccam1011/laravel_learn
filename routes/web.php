@@ -73,3 +73,14 @@ Route::get('/giai-ptb2', 'Ptb2@getFormGiaiPTB2');
 Route::get('/giai-ptb2-submit', 'Ptb2@getFormGiaiPTB2Submit');
 Route::get('/login', 'AuthController@Login');
 Route::post('/login', 'AuthController@getFormSubmit');
+Route::put('/posts', 'PostController@update');
+Route::get('/posts-edit', 'PostController@update');
+
+Route::get('/posts/create', 'PostsController@create')->name('posts.create');
+Route::post('/posts', 'PostsController@createPosts')->name('posts.store');
+Route::get('/index', 'PostsController@index')->name('posts.index');
+
+Route::get('/posts/{id}/edit', 'PostsController@edit')->name('posts.edit');
+Route::put('/posts/{id}', 'PostsController@update')->name('posts.update');
+
+Route::get('/posts/{id}/delete', 'PostsController@delete')->name('posts.delete');

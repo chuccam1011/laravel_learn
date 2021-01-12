@@ -83,4 +83,5 @@ Route::get('/index', 'PostsController@index')->name('posts.index');
 Route::get('/posts/{id}/edit', 'PostsController@edit')->name('posts.edit');
 Route::put('/posts/{id}', 'PostsController@update')->name('posts.update');
 
-Route::get('/posts/{id}/delete', 'PostsController@delete')->name('posts.delete');
+Route::delete('/posts/{id}/delete', 'PostsController@delete')->name('posts.delete');
+Route::get('/fake-data', 'PostsController@fakeData')->name('posts.fake_data');

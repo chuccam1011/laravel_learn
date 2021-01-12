@@ -28,7 +28,18 @@
                     <label for="">Descreption</label>
                     <input value="{{$post->description}}" type="text" name="description" class="form-control" id="exampleInputPassword1" placeholder="Password">
                 </div>
-                <div class="form-check">
+
+
+                <div class="form-group">
+                    <label for="">Category</label>
+                    <select name="category_id" class="form-control" id="">
+                        @foreach($cats as $cat)
+                            <option
+                                @if($post->category_id==$cat->id) {{'selected'}}@endif
+                                value="{{$cat->id}}">{{$cat->name}}</option>
+                        @endforeach
+                    </select>
+                    <div class="form-check">
                     <textarea name="content" id="" cols="30" rows="10">
                         {{$post->content}}
                     </textarea>

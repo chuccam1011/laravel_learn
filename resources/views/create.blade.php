@@ -20,12 +20,26 @@
                 @csrf
                 <div class="form-group">
                     <label for="">Title</label>
-                    <input type="text" name="title" class="form-control" aria-describedby="emailHelp" placeholder="Enter Tiltle">
+                    <input type="text" name="title" class="form-control" aria-describedby="emailHelp"
+                           placeholder="Enter Tiltle">
 
                 </div>
                 <div class="form-group">
                     <label for="">Descreption</label>
-                    <input type="text" name="description" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <input type="text" name="description" class="form-control" id="" placeholder="Password">
+                </div>
+
+                <div class="form-group">
+                    <label for="">Category</label>
+                    <select name="category_id" class="form-control" id="">
+                        <option value="">Select Category</option>
+                        @foreach($cats as $cat)
+                            <option
+                                value="{{$cat->id}}">{{$cat->name}}</option
+                                >
+                        @endforeach
+                    </select>
+
                 </div>
                 <div class="form-check">
                     <textarea name="content" id="" cols="30" rows="10"></textarea>

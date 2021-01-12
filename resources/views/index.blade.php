@@ -17,6 +17,11 @@
     <div class="row">
         <div class="col-md-12">
             <a href="{{route("posts.create")}}">New Post</a>
+            <br>
+            <form action="">
+                <input type="text" value="{{request()->key}}" placeholder="Enter your key " name="key" id="">
+                <button type="submit">Search.. </button>
+            </form>
             <table class="table table-dark">
                 <thead>
                 <tr>
@@ -33,16 +38,36 @@
                         <th scope="row">{{ $post->id }}</th>
                         <td>{{ $post->title}}</td>
                         <td>{{ $post->description }}</td>
-{{--                        <td>{{ $post->cojntent }}</td>--}}
+                        {{--                        <td>{{ $post->cojntent }}</td>--}}
                         <td>{{ $post->created_at }}</td>
-                        <td><a href="{{ route('posts.edit',$post->id) }}">Edit</a>||
-                            <a href="{{route('posts.delete',$post->id)}}">Delete</a></td>
-
-                    </tr>@endforeach
+                        <td>
+                            <button type="button"><a href="{{ route('posts.edit',$post->id) }}">Edit</a></button>
+                            ||
+                            <form id="frm-delete" method="POST" action="{{route('posts.delete',$post->id)}}">
+                                @method('delete')
+                                @csrf
+                                <button id="btn-delete" type="button" class="btn btn-primary">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
+            {{$posts->render()}}
+
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#btn-delete').click(function () {
+            let isDelete = confirm("Do you want to delete ? ");
+            if (isDelete) {
+                $(this).parent().submit();
+            }
+        })
+    })
+</script>
 </body>
 </html>

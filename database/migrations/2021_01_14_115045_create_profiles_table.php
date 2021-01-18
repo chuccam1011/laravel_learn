@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class PostTag extends Migration
+class CreateProfilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class PostTag extends Migration
      */
     public function up()
     {
-        Schema::create('post_tag', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->Integer('post_id');
-            $table->Integer('tag_id');
+            $table->string('in_code')->nullable();
+            $table->string('address')->nullable();
+            $table->tinyInteger('gender')->default(1);
+            $table->Integer('user_id');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class PostTag extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('profiles');
     }
 }

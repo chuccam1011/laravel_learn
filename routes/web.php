@@ -55,15 +55,15 @@ Route::get('/posts', function () {
     }
 });
 Route::get('/posts-by-category', function () {
-    $posts = \App\Post::where('category_id',1)->where('status',1)->get();
+    $posts = \App\Post::where('category_id', 1)->where('status', 1)->get();
     foreach ($posts as $post) {
         echo $post->title . '<br>';
     }
 });
 Route::get('/posts-by-whereOr', function () {
-    $posts = \App\Post::where('id',8)->orwhere(function ($quary){
-        $quary->where('id',10);
-        $quary->where('status',0);
+    $posts = \App\Post::where('id', 8)->orwhere(function ($quary) {
+        $quary->where('id', 10);
+        $quary->where('status', 0);
     })->get();
     foreach ($posts as $post) {
         echo $post->title . '<br>';
@@ -85,3 +85,29 @@ Route::put('/posts/{id}', 'PostsController@update')->name('posts.update');
 
 Route::delete('/posts/{id}/delete', 'PostsController@delete')->name('posts.delete');
 Route::get('/fake-data', 'PostsController@fakeData')->name('posts.fake_data');
+
+Route::get('/fake-user', function () {
+    $user = new \App\User;
+    $user->name = "chuc";
+    $user->full_name = "cam chuc";
+    $user->email = "chuccam@dja.com";
+    $user->password = bcrypt('12345');
+    $user->save();
+});
+Route::get('relationship/1-1',function (){
+    $user =  \App\User::find(1);
+    /* @var \App\User $user
+    */
+    echo "name: {$user->name}";
+    echo "Add : {$user->profile->address}";
+
+});
+Route::get('relationship/1-1-reverse',function (){
+    $profile =  \App\Profile::find(1);
+    /* @var \App\Profile $profile
+     */
+    echo "in_code: {$profile->in_code}".'<br>';
+    echo "user. email : {$profile->user->email}";
+
+});
+Route::get('category/{id}/posts',"CategoryController@posts");

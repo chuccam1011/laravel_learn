@@ -21,30 +21,45 @@
                 @method('put')
                 <div class="form-group">
                     <label for="">Title</label>
-                    <input value="{{$post->title}}" type="text" name="title" class="form-control" aria-describedby="emailHelp" placeholder="Enter Tiltle">
-
+                    <input value="{{$post->title}}" type="text" name="title" class="form-control"
+                           aria-describedby="emailHelp" placeholder="Enter Tiltle">
                 </div>
                 <div class="form-group">
-                    <label for="">Descreption</label>
-                    <input value="{{$post->description}}" type="text" name="description" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <label for="">Descreption</label><br>
+                    <input value="{{$post->description}}" type="text" name="description" class="form-control"
+                           placeholder="Enter descreption">
                 </div>
-
 
                 <div class="form-group">
                     <label for="">Category</label>
                     <select name="category_id" class="form-control" id="">
+                        <option value="">Select Category</option>
                         @foreach($cats as $cat)
                             <option
                                 @if($post->category_id==$cat->id) {{'selected'}}@endif
                                 value="{{$cat->id}}">{{$cat->name}}</option>
                         @endforeach
                     </select>
-                    <div class="form-check">
-                    <textarea name="content" id="" cols="30" rows="10">
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea name="content" id="" cols="90" rows="10">
                         {{$post->content}}
                     </textarea>
-                    <label class="form-check-label" for="exampleCheck1">Content</label>
                 </div>
+                @php
+                    $tagIds = $post->tags->pluck('id')->toArray();
+                @endphp
+                <div class="form-group">
+                    <label for="">Tag</label><br>
+                    <select multiple name="tag_id[]">
+                        @foreach($tags as $tag)
+                            <option
+                                {{in_array($tag->id,$tagIds) ? 'selected':''}} value="{{$tag->id}}">{{$tag->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <br>
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
 

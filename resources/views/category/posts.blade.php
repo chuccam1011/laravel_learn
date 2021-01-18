@@ -28,41 +28,19 @@
                     <th scope="col">#</th>
                     <th scope="col">Tiltle</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Tags</th>
                     <th scope="col">Create At</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-{{--                @php()--}}
-{{--                    /* @var \App\Post $post--}}
-{{--                    */}}--}}
-{{--                @endphp--}}
                 @foreach($posts as $post)
                     <tr>
-                        <td scope="row">{{ $post->id }}</td>
+                        <th scope="row">{{ $post->id }}</th>
                         <td>{{ $post->title}}</td>
                         <td>{{ $post->description }}</td>
-                        <td>
-                            @if($post->category)
-                                {{ $post->category->name }}
-                            @endif
-                        </td>
-                        <td>
-                            @if($post->tags()->count())
-                                <ul>
-                                    @foreach($post->tags as $tag)
-                                        <li>{{$tag->name}}</li>
-                                    @endforeach
-                                </ul>
-
-                            @endif
-
-                        </td>
                         <td>{{ $post->created_at }}</td>
                         <td>
-                            <button class="btn " type="button"><a href="{{ route('posts.edit',$post->id) }}">Edit</a></button>
+                            <button type="button"><a href="{{ route('posts.edit',$post->id) }}">Edit</a></button>
                             ||
                             <form id="frm-delete" method="POST" action="{{route('posts.delete',$post->id)}}">
                                 @method('delete')
@@ -75,16 +53,17 @@
                 </tbody>
             </table>
             {{$posts->appends(request()->all()) }}
+
         </div>
     </div>
 </div>
-
 <style type="text/css">
-    li {
+    li{
+
         margin-left: 10px;
     }
-</style>
 
+</style>
 <script>
     $(document).ready(function () {
         $('#btn-delete').click(function () {

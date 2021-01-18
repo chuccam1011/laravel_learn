@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group">
                     <label for="">Descreption</label>
-                    <input type="text" name="description" class="form-control" id="" placeholder="Password">
+                    <input type="text" name="description" class="form-control" id="" placeholder="Enter descreption ">
                 </div>
 
                 <div class="form-group">
@@ -34,16 +34,22 @@
                     <select name="category_id" class="form-control" id="">
                         <option value="">Select Category</option>
                         @foreach($cats as $cat)
-                            <option
-                                value="{{$cat->id}}">{{$cat->name}}</option
-                                >
+                            <option value="{{$cat->id}}">{{$cat->name}}</option>
                         @endforeach
                     </select>
-
                 </div>
-                <div class="form-check">
-                    <textarea name="content" id="" cols="30" rows="10"></textarea>
-                    <label class="form-check-label" for="exampleCheck1">Content</label>
+                <div class="form-group">
+                    <label for="">Tag</label><br>
+                    <select multiple name="tag_id[]">
+                        @foreach($tags as $tag)
+                            <option value="{{$tag->id}}">{{$tag->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>Content</label><br>
+                    <textarea name="content" id="" cols="80" rows="10"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

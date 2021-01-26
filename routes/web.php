@@ -71,8 +71,10 @@ Route::get('/posts-by-whereOr', function () {
 });
 Route::get('/giai-ptb2', 'Ptb2@getFormGiaiPTB2');
 Route::get('/giai-ptb2-submit', 'Ptb2@getFormGiaiPTB2Submit');
-Route::get('/login', 'AuthController@Login');
-Route::post('/login', 'AuthController@getFormSubmit');
+
+Route::get('/register', 'AuthController@register');
+Route::post('/submit-register', 'AuthController@getSubmitRegister')->name('register');
+
 Route::put('/posts', 'PostController@update');
 Route::get('/posts-edit', 'PostController@update');
 
@@ -94,20 +96,21 @@ Route::get('/fake-user', function () {
     $user->password = bcrypt('12345');
     $user->save();
 });
-Route::get('relationship/1-1',function (){
-    $user =  \App\User::find(1);
+Route::get('relationship/1-1', function () {
+    $user = \App\User::find(1);
     /* @var \App\User $user
-    */
+     */
     echo "name: {$user->name}";
     echo "Add : {$user->profile->address}";
 
 });
-Route::get('relationship/1-1-reverse',function (){
-    $profile =  \App\Profile::find(1);
+Route::get('relationship/1-1-reverse', function () {
+    $profile = \App\Profile::find(1);
     /* @var \App\Profile $profile
      */
-    echo "in_code: {$profile->in_code}".'<br>';
+    echo "in_code: {$profile->in_code}" . '<br>';
     echo "user. email : {$profile->user->email}";
 
 });
-Route::get('category/{id}/posts',"CategoryController@posts");
+Route::get('category/{id}/posts', "CategoryController@posts");
+Route::get('tag/{id}/posts', "TagController@posts");

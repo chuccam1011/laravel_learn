@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRegister;
 
 class AuthController extends Controller
 {
-    public function Login()
+
+    public function register()
     {
-        return view('auth_login');
+        return view('auth.register');
     }
 
-    public function getFormSubmit(Request $request)
+
+    public function getSubmitRegister(UserRegister $request)
     {
-        dd($request->email,$request->pass);
+        dd($request->all());
     }
+
 }

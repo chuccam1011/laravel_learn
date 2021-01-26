@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\CreateNewPost;
 use App\Post;
 use App\Tag;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -30,8 +32,33 @@ class PostsController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function createPosts(Request $request)
+    public function createPosts(CreateNewPost $request)
     {
+//        $request->validate([
+//            'title' => 'required|min:8|unique:posts',
+//            'category_id' => 'required',
+//            'description' => 'required',
+//            'content' => 'required'
+//        ], [
+//                'title.required' => "Tieeu canf k ddduocjw trongs"
+//            ]
+//        );
+
+//
+//        $validator = Validator::make($request->all(), [
+//            'title' => 'required|min:8|unique:posts',
+//            'category_id' => 'required',
+//            'description' => 'required',
+//            'content' => 'required'
+//        ], [
+//                'title.required' => "Tieeu canf k ddduocjw trongs"
+//            ]
+//        );dd
+//
+//        if ($validator->fails()) {
+//            return redirect()->back()->withErrors($validator)->withInput();
+//        }
+
         $post = new Post;
         $title = $request->title;
         $description = $request->description;
@@ -56,9 +83,21 @@ class PostsController extends BaseController
     public function index(Request $request)
     {
         $key = $request->input('key');
+        $tag_ids = $request->input('tag_ids', []);
+        $category_id = $request->input('category_id');
         $posts = Post::query();
         if ($key) {
             $posts->where('title', 'like', "%{$key}%");
+        }
+        if (count($tag_ids) > 0) {
+            $posts->whereHas('tags', function ($query) use ($tag_ids) {
+                $query->whereIn('tag.id', $tag_ids);
+            });
+        }
+
+        if ($category_id) {
+            $posts->where('category_id', $category_id);
+
         }
 
 //        $posts = $posts->orderBy("id", 'desc')->paginate();
@@ -66,10 +105,12 @@ class PostsController extends BaseController
 
         $data = [
             'posts' => $posts->paginate(10),
-            'tags' => Tag::all()
+            'tags' => Tag::all(),
+            'cats' => Category::all()
         ];
         return view('index', $data);
     }
+
 
     /**
      * @param $id
@@ -96,10 +137,25 @@ class PostsController extends BaseController
      */
     public function update($id, Request $request)
     {
-        $post = Post::find($id);
-        /* @var \App\Post $post
-         */
 
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|min:8|unique:posts,title,' . $id . ',id',
+            'category_id' => 'required',
+            'description' => 'required',
+            'content' => 'required'
+        ], [
+                'title.required' => "Tieeu ddeef k0 ddduocjw trongs"
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $post = Post::find($id);
+        /*
+            @var \App\Post $post
+         */
         $title = $request->title;
         $description = $request->description;
         $content = $request->input('content');
@@ -125,8 +181,6 @@ class PostsController extends BaseController
         $post = Post::find($id);
         $post->delete();
         return redirect()->route('posts.index');
-
-
     }
 
     public function fakeData()

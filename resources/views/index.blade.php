@@ -1,99 +1,109 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<body>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+@extends('layout.master')
+@push('title')
+    List Posts
+@endpush
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <a href="{{route("posts.create")}}">Create New Post</a>
-            <br>
-            <form action="">
-                <input type="text" value="{{request()->key}}" placeholder="Enter your key " name="key" id="">
-                <button type="submit">Search..</button>
-            </form>
-            <table class="table table-dark" style="margin-top: 30px">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Tiltle</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Tags</th>
-                    <th scope="col">Create At</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-{{--                @php()--}}
-{{--                    /* @var \App\Post $post--}}
-{{--                    */}}--}}
-{{--                @endphp--}}
-                @foreach($posts as $post)
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="{{route("posts.create")}}">Create New Post</a>
+                <br>
+                <form action="">
+                    <label for="">Tag</label>
+                    <select class="js-example-basic-single" multiple="multiple" name="tag_ids[]">
+                        @foreach($tags as $tag)
+                            <option
+                                value="{{$tag->id}}">{{$tag->name}}</option>
+                        @endforeach
+                    </select>
+                    <div class="form-group">
+                        <label for="">Category</label>
+                        <select name="category_id" class="" id="">
+                            <option value="">Select Category</option>
+                            @foreach($cats as $cat)
+                                <option
+                                    value="{{$cat->id}}">{{$cat->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <input type="text" value="{{request()->key}}" placeholder="Enter your key " name="key" id="">
+                    <button class="btn btn-primary" type="submit">Search..</button>
+                </form>
+                <table class="table table-dark" style="margin-top: 30px">
+                    <thead>
                     <tr>
-                        <td scope="row">{{ $post->id }}</td>
-                        <td>{{ $post->title}}</td>
-                        <td>{{ $post->description }}</td>
-                        <td>
-                            @if($post->category)
-                                {{ $post->category->name }}
-                            @endif
-                        </td>
-                        <td>
-                            @if($post->tags()->count())
-                                <ul>
-                                    @foreach($post->tags as $tag)
-                                        <li>{{$tag->name}}</li>
-                                    @endforeach
-                                </ul>
-
-                            @endif
-
-                        </td>
-                        <td>{{ $post->created_at }}</td>
-                        <td>
-                            <button class="btn " type="button"><a href="{{ route('posts.edit',$post->id) }}">Edit</a></button>
-                            ||
-                            <form id="frm-delete" method="POST" action="{{route('posts.delete',$post->id)}}">
-                                @method('delete')
-                                @csrf
-                                <button id="btn-delete" type="button" class="btn btn-primary">Delete</button>
-                            </form>
-                        </td>
+                        <th scope="col">#</th>
+                        <th scope="col">Tiltle</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Tags</th>
+                        <th scope="col">Create At</th>
+                        <th scope="col">Action</th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
-            {{$posts->appends(request()->all()) }}
+                    </thead>
+                    <tbody>
+                    @foreach($posts as $post)
+                        <tr>
+                            <td scope="row">{{ $post->id }}</td>
+                            <td>{{ $post->title}}</td>
+                            <td>{{ $post->description }}</td>
+                            <td>
+                                @if($post->category)
+                                    {{ $post->category->name }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($post->tags()->count())
+                                    <ul>
+                                        @foreach($post->tags as $tag)
+                                            <li>{{$tag->name}}</li>
+                                        @endforeach
+                                    </ul>
+
+                                @endif
+
+                            </td>
+                            <td>{{ $post->created_at }}</td>
+                            <td>
+                                <button class="btn " type="button"><a
+                                        href="{{ route('posts.edit',$post->id) }}">Edit</a>
+                                </button>
+                                ||
+                                <form id="frm-delete" method="POST" action="{{route('posts.delete',$post->id)}}">
+                                    @method('delete')
+                                    @csrf
+                                    <button id="btn-delete" type="button" class="btn btn-primary">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                {{$posts->appends(request()->all()) }}
+            </div>
         </div>
     </div>
-</div>
 
-<style type="text/css">
-    li {
-        margin-left: 10px;
-    }
-</style>
+    <style type="text/css">
+        li {
+            margin-left: 10px;
+        }
+    </style>
 
-<script>
-    $(document).ready(function () {
-        $('#btn-delete').click(function () {
-            let isDelete = confirm("Do you want to delete ? ");
-            if (isDelete) {
-                $(this).parent().submit();
-            }
+    <script>
+        $(document).ready(function () {
+            $('#btn-delete').click(function () {
+                let isDelete = confirm("Do you want to delete ? ");
+                if (isDelete) {
+                    $(this).parent().submit();
+                }
+            })
         })
-    })
-</script>
-</body>
-</html>
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+@endsection

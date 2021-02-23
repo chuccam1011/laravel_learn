@@ -39,6 +39,12 @@ class User extends Authenticatable
 
     public function profile()
     {
-        return $this->hasOne('App\Profile','user_id',"id");
+        return $this->hasOne('App\Profile', 'user_id', "id");
+    }
+
+    public function getStrType()
+    {
+        $permissionMap = array_flip(config('permission'));
+        return $permissionMap[$this->type];
     }
 }

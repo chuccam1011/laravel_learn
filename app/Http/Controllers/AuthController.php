@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRegister;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -12,10 +14,21 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-
-    public function getSubmitRegister(UserRegister $request)
+    public function login(Request $request)
     {
-        dd($request->all());
+        return view('auth.login');
+
+    }
+
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->route('posts.index');
+        }
+        return redirect()->route('getlogin');
     }
 
 }

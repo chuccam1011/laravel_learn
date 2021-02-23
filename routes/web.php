@@ -75,24 +75,12 @@ Route::get('/giai-ptb2-submit', 'Ptb2@getFormGiaiPTB2Submit');
 Route::get('/register', 'AuthController@register');
 Route::post('/submit-register', 'AuthController@getSubmitRegister')->name('register');
 
-Route::put('/posts', 'PostController@update');
-Route::get('/posts-edit', 'PostController@update');
-
-Route::get('/posts/create', 'PostsController@create')->name('posts.create');
-Route::post('/posts', 'PostsController@createPosts')->name('posts.store');
-Route::get('/index', 'PostsController@index')->name('posts.index');
-
-Route::get('/posts/{id}/edit', 'PostsController@edit')->name('posts.edit');
-Route::put('/posts/{id}', 'PostsController@update')->name('posts.update');
-
-Route::delete('/posts/{id}/delete', 'PostsController@delete')->name('posts.delete');
-Route::get('/fake-data', 'PostsController@fakeData')->name('posts.fake_data');
-
 Route::get('/fake-user', function () {
     $user = new \App\User;
     $user->name = "chuc";
     $user->full_name = "cam chuc";
-    $user->email = "chuccam@dja.com";
+    $user->email = "chuc@dja.com";
+    $user->gender = 0;
     $user->password = bcrypt('12345');
     $user->save();
 });
@@ -114,3 +102,30 @@ Route::get('relationship/1-1-reverse', function () {
 });
 Route::get('category/{id}/posts', "CategoryController@posts");
 Route::get('tag/{id}/posts', "TagController@posts");
+Route::get('login', "AuthController@login")->name('getlogin');
+Route::post('authenticate', "AuthController@authenticate")->name('login');
+Route::post('logout', "AuthController@logout");
+Route::get('403', function(){
+    return view('403');
+})->name('403');
+
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+
+    Route::put('/posts', 'PostController@update');
+    Route::get('/posts-edit', 'PostController@update');
+
+    Route::get('/posts/create', 'PostsController@create')->name('posts.create');
+    Route::post('/posts', 'PostsController@createPosts')->name('posts.store');
+    Route::get('/index', 'PostsController@index')->name('posts.index')->middleware('permission:editor|admin|moderator');
+
+    Route::get('/posts/{id}/edit', 'PostsController@edit')->name('posts.edit');
+    Route::put('/posts/{id}', 'PostsController@update')->name('posts.update');
+
+    Route::delete('/posts/{id}/delete', 'PostsController@delete')->name('posts.delete');
+    Route::get('/fake-data', 'PostsController@fakeData')->name('posts.fake_data');
+    Route::get('/male', function(){
+        echo 'Male zone';
+    })->middleware('only-male');
+
+});

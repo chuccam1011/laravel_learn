@@ -13,7 +13,7 @@
     @csrf
     <div class="form-group">
         <label for="email">Email address:</label>
-        <input type="email"  name="email" class="form-control" placeholder="Enter email" id="email">
+        <input type="email" name="email" class="form-control" placeholder="Enter email" id="email">
     </div>
     <div class="form-group">
         <label for="pwd">Password:</label>
@@ -21,7 +21,7 @@
     </div>
     <div class="form-group form-check">
         <label class="form-check-label">
-            <input  class="form-check-input" type="checkbox"> Remember me
+            <input class="form-check-input" type="checkbox"> Remember me
         </label>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>

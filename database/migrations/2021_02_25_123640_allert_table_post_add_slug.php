@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AllertTableUserAddType extends Migration
+class AllertTablePostAddSlug extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AllertTableUserAddType extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('type');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->integer('slug');
         });
 
     }
@@ -27,7 +27,6 @@ class AllertTableUserAddType extends Migration
 
     public function down()
     {
-        Schema::dropColumn('type');
+        Schema::dropColumn('slug');
     }
-
 }

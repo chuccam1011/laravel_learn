@@ -105,7 +105,7 @@ Route::get('tag/{id}/posts', "TagController@posts");
 Route::get('login', "AuthController@login")->name('getlogin');
 Route::post('authenticate', "AuthController@authenticate")->name('login');
 Route::post('logout', "AuthController@logout");
-Route::get('403', function(){
+Route::get('403', function () {
     return view('403');
 })->name('403');
 
@@ -124,8 +124,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     Route::delete('/posts/{id}/delete', 'PostsController@delete')->name('posts.delete');
     Route::get('/fake-data', 'PostsController@fakeData')->name('posts.fake_data');
-    Route::get('/male', function(){
+    Route::get('/male', function () {
         echo 'Male zone';
     })->middleware('only-male');
 
+});
+Route::get('testCollection', function () {
+    $postCollection = \App\Post::all();
+    $postCollection = $postCollection->filter(function ($post) {
+        return  ($post->category_id == 2 && $post->user_id== 2 );
+    });
+    foreach($postCollection as $post){
+        echo $post->title.'<br>';
+    }
 });

@@ -7,7 +7,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @can('post-create')
                 <a href="{{route("posts.create")}}">Create New Post</a>
+                @endcan
                 <br>
                 <form action="">
                     <label for="">Tag</label>

@@ -6,6 +6,7 @@ use App\Category;
 use App\Http\Requests\CreateNewPost;
 use App\Post;
 use App\Tag;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -19,6 +20,10 @@ class PostsController extends BaseController
      */
     public function create()
     {
+
+        if (Gate::denies('post-create')){
+            abort(403);
+        }
         $cats = Category::all();
         $tags = Tag::all();
         return view('create', [
@@ -82,6 +87,10 @@ class PostsController extends BaseController
      */
     public function index(Request $request)
     {
+        if (Gate::denies('post-index')){
+            abort(403);
+        }
+
         $key = $request->input('key');
         $tag_ids = $request->input('tag_ids', []);
         $category_id = $request->input('category_id');
@@ -168,7 +177,7 @@ class PostsController extends BaseController
 
         $post->save();
         $post->tags()->sync($tagsIds);
-
+        event( new \App\Events\PostUpdate($post));
         return redirect()->route('posts.index');
     }
 
@@ -195,6 +204,7 @@ Bí thư Hà Nội \'trao đổi hết lẽ\' với chủ đầu tư nhà 8B Lê
 Chia sẻ tại cuộc họp của Thành ủy Hà Nội về xây dựng Đảng gắn với giải quyết các vấn đề phức tạp, nổi cộm trên địa bàn thành phố vào năm 2020, ông Vương Đình Huệ cho biết chủ đầu tư công trình 8B Lê Trực thường xuyên liên lạc xin gặp Bí thư Thành ủy để trình bày về dự án.
 “Tôi đồng ý hẹn gặp và đã ngồi trao đổi hết lẽ 4 tiếng đồng hồ với chủ đầu tư. Tôi cũng nói với chủ đầu tư đây cũng là cuộc gặp duy nhất để sau này Thành phố sẽ thống nhất xử lý sai phạm”, Bí thư Huệ nói tại buổi làm việc.
 Theo người đứng đầu Đảng bộ TP, việc xử lý sai phạm ở công trình này cần kiên quyết, nhưng cũng phải kiên trì. TP xử lý dứt điểm được những việc nổi cộm để tạo môi trường thuận lợi cho Đại hội đảng bộ các cấp theo phương châm dễ làm trước, khó làm sau.';
+            $post->category_id=1;
             $post->save();
             echo $i . '<br>';
         }

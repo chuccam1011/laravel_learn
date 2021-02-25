@@ -18,6 +18,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        'App\Events\PostUpdate' =>[
+            'App\Listeners\UpdatePostSlug'
+        ],
+        'App\Events\PostCreate' =>[
+            'App\Listeners\CreatePostSlug'
+        ]
     ];
 
     /**
@@ -29,6 +35,5 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
     }
 }

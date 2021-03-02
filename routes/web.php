@@ -117,7 +117,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     Route::get('/posts/create', 'PostsController@create')->name('posts.create');
     Route::post('/posts', 'PostsController@createPosts')->name('posts.store');
-    Route::get('/index', 'PostsController@index')->name('posts.index')->middleware('permission:editor|admin|moderator');
+    Route::get('/index', 'PostsController@index')->name('posts.index')
+        ->middleware('permission:editor|admin|moderator');
 
     Route::get('/posts/{id}/edit', 'PostsController@edit')->name('posts.edit');
     Route::put('/posts/{id}', 'PostsController@update')->name('posts.update');
@@ -132,9 +133,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 Route::get('testCollection', function () {
     $postCollection = \App\Post::all();
     $postCollection = $postCollection->filter(function ($post) {
-        return  ($post->category_id == 2 && $post->user_id== 2 );
+        return ($post->category_id == 2 && $post->user_id == 2);
     });
-    foreach($postCollection as $post){
-        echo $post->title.'<br>';
+    foreach ($postCollection as $post) {
+        echo $post->title . '<br>';
     }
 });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AllertTableUserAddType extends Migration
+class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class AllertTableUserAddType extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('type');
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->integer('price');
+            $table->integer('rate');
+            $table->timestamps();
         });
-
     }
 
     /**
@@ -24,12 +27,8 @@ class AllertTableUserAddType extends Migration
      *
      * @return void
      */
-
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('type');
-        });
+        Schema::dropIfExists('products');
     }
-
 }

@@ -14,7 +14,7 @@ class AllertTablePostAddSlug extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->integer('slug');
+            $table->integer('slug')->nullable();
         });
 
     }
@@ -27,6 +27,8 @@ class AllertTablePostAddSlug extends Migration
 
     public function down()
     {
-        Schema::dropColumn('slug');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn('slug');
+        });
     }
 }
